@@ -4791,6 +4791,7 @@ components:
           googleChat,
           microsoftTeams,
           microsoftTeamsWorkflow,
+          ntfy,
           opsgenie,
           pagerDuty,
           pushover,
