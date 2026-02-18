@@ -3903,7 +3903,6 @@ components:
             expected_closed_ports:
               type: array
               items: { type: integer }
-            timeout_per_port_ms: { type: integer }
             failure_threshold: { type: integer }
         dns_blocklist_check_settings:
           type: ["object", "null"]
@@ -4032,7 +4031,6 @@ components:
             expected_closed_ports:
               type: array
               items: { type: integer }
-            timeout_per_port_ms: { type: integer }
         send_report_to_emails:
           type: array
           items: { type: string, format: email }
@@ -4136,7 +4134,6 @@ components:
             expected_closed_ports:
               type: array
               items: { type: integer }
-            timeout_per_port_ms: { type: integer }
         dns_blocklist_check_settings:
           type: object
           properties:
@@ -5428,31 +5425,17 @@ components:
       properties:
         id: { type: integer }
         scanned_host: { type: string }
-        expected_open_results:
+        resolved_ip:
+          type: ["string", "null"]
+        open_ports:
           type: array
-          items:
-            $ref: "#/components/schemas/PortScanResultItem"
-        expected_closed_results:
-          type: array
-          items:
-            $ref: "#/components/schemas/PortScanResultItem"
+          items: { type: integer }
         issues:
           type: array
           items:
             $ref: "#/components/schemas/PortScanIssue"
         scan_time_ms: { type: integer }
         created_at: { type: string }
-
-    PortScanResultItem:
-      type: object
-      description: A single port result within a port scan
-      properties:
-        port: { type: integer }
-        status: { type: string }
-        response_time_ms:
-          type: ["integer", "null"]
-        error_message:
-          type: ["string", "null"]
 
     PortScanIssue:
       type: object
