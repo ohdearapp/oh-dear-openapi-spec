@@ -4031,6 +4031,7 @@ components:
             expected_closed_ports:
               type: array
               items: { type: integer }
+            failure_threshold: { type: integer }
         send_report_to_emails:
           type: array
           items: { type: string, format: email }
@@ -4134,6 +4135,7 @@ components:
             expected_closed_ports:
               type: array
               items: { type: integer }
+            failure_threshold: { type: integer }
         dns_blocklist_check_settings:
           type: object
           properties:
