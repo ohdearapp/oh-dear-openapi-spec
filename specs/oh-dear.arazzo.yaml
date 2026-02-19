@@ -1015,6 +1015,18 @@ workflows:
       - name: Authorization
         value: Bearer {$inputs.bearerAuth}
         in: header
+  - workflowId: put-reseller-{resellerTeamId}-managed-teams-{managedTeamId}-workflow
+    steps:
+      - stepId: put-reseller-{resellerTeamId}-managed-teams-{managedTeamId}-step
+        operationId: $sourceDescriptions.openapi.updateManagedTeam
+        successCriteria:
+          - condition: $statusCode == 200
+    inputs:
+      $ref: "#/components/inputs/bearerAuth"
+    parameters:
+      - name: Authorization
+        value: Bearer {$inputs.bearerAuth}
+        in: header
   - workflowId: delete-reseller-{resellerTeamId}-managed-teams-{managedTeamId}-workflow
     steps:
       - stepId: delete-reseller-{resellerTeamId}-managed-teams-{managedTeamId}-step

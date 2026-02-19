@@ -3039,6 +3039,46 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
+    put:
+      tags: [Reseller]
+      summary: Update a managed team
+      description: Update the name, timezone, or default uptime check location for a managed team.
+      operationId: updateManagedTeam
+      parameters:
+        - $ref: "#/components/parameters/ResellerTeamId"
+        - $ref: "#/components/parameters/ManagedTeamId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateManagedTeamRequest"
+            examples:
+              basic:
+                value:
+                  name: Updated Client Company
+                  timezone: Europe/Brussels
+                  default_uptime_check_location: paris
+      responses:
+        "200":
+          description: Managed team updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagedTeamResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      id: 12345
+                      name: Updated Client Company
+                      timezone: Europe/Brussels
+                      created_at: "2024-01-15T10:30:00.000000Z"
+                      monitors_count: 5
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/Validation" }
     delete:
       tags: [Reseller]
       summary: Delete a managed team
@@ -4998,6 +5038,20 @@ components:
         timezone:
           type: string
           description: Team timezone (defaults to reseller's timezone)
+        default_uptime_check_location:
+          type: string
+          description: Default uptime check location
+
+    UpdateManagedTeamRequest:
+      type: object
+      description: Request to update a managed team
+      properties:
+        name:
+          type: string
+          description: The name of the team
+        timezone:
+          type: string
+          description: Team timezone
         default_uptime_check_location:
           type: string
           description: Default uptime check location
