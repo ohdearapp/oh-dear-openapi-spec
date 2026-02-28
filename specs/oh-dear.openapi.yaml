@@ -3858,6 +3858,11 @@ components:
           type: ["string", "null"]
         summarized_check_result:
           type: string
+          description: >-
+            The aggregated result across all checks for this monitor.
+            `warning` indicates at least one check has a partial connectivity issue but none have fully failed.
+            For uptime checks, this means the primary checker location failed but the secondary location confirmed the monitor is still reachable.
+            Warnings count as online for uptime percentage calculations. Priority order: failed > warning > succeeded > pending.
           enum: [pending, succeeded, warning, failed, "errored-or-timed-out"]
         checks:
           type: array
@@ -4280,6 +4285,10 @@ components:
           type: ["string", "null"]
         latest_run_result:
           type: string
+          description: >-
+            The result of the most recent check run.
+            `warning` indicates the primary checker location failed but the secondary location confirmed the monitor is still reachable (partial connectivity issue).
+            Warnings count as online for uptime percentage calculations and do not create downtime periods.
           enum: [pending, succeeded, warning, failed, "errored-or-timed-out"]
         summary:
           type: ["string", "null"]
@@ -4345,6 +4354,10 @@ components:
       properties:
         result:
           type: ["string", "null"]
+          description: >-
+            The result of the check summary.
+            `warning` indicates a partial connectivity issue where the primary checker location failed but the secondary location confirmed the monitor is still reachable.
+            `null` when the check has not yet run.
           enum: [pending, succeeded, warning, failed, null]
         summary: { type: string }
 
