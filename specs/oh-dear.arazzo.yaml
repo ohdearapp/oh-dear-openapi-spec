@@ -331,6 +331,18 @@ workflows:
       - name: Authorization
         value: Bearer {$inputs.bearerAuth}
         in: header
+  - workflowId: get-monitors-{monitorId}-checks-{checkType}-runs-workflow
+    steps:
+      - stepId: get-monitors-{monitorId}-checks-{checkType}-runs-step
+        operationId: $sourceDescriptions.openapi.listCheckRuns
+        successCriteria:
+          - condition: $statusCode == 200
+    inputs:
+      $ref: "#/components/inputs/bearerAuth"
+    parameters:
+      - name: Authorization
+        value: Bearer {$inputs.bearerAuth}
+        in: header
   - workflowId: get-monitors-{monitorId}-detected-certificates-workflow
     steps:
       - stepId: get-monitors-{monitorId}-detected-certificates-step
