@@ -30,6 +30,8 @@ tags:
     description: Endpoints related to broken links checks.
   - name: Certificates
     description: Endpoints related to certificate health checks.
+  - name: Check History
+    description: Endpoints for listing historical check runs and fetching results from specific past runs.
   - name: Checks
     description: Endpoints for managing checks on monitors.
   - name: Cron Checks
@@ -573,6 +575,66 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
+  # --- Check History ---
+  /monitors/{monitorId}/checks/{checkType}/runs:
+    get:
+      tags: [Check History]
+      summary: List historical check runs
+      description: >
+        Returns a paginated list of completed runs for any check type on a monitor.
+        Only runs with a result of `succeeded`, `warning`, or `failed` are included.
+        Runs are kept for approximately 10 days before being automatically pruned.
+        Use the returned run IDs to fetch detailed results from the broken links, mixed content,
+        certificate health, or sitemap endpoints via their `run_id` query parameter.
+      operationId: listCheckRuns
+      parameters:
+        - $ref: "#/components/parameters/MonitorId"
+        - name: checkType
+          description: The type of check to list runs for.
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CheckType"
+        - $ref: "#/components/parameters/FilterStartedAfter"
+        - $ref: "#/components/parameters/FilterStartedBefore"
+        - $ref: "#/components/parameters/FilterResult"
+        - $ref: "#/components/parameters/PageNumber"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Paginated list of check runs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckRunsResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      - id: 98765
+                        check_id: 30536
+                        check_type: broken_links
+                        result: succeeded
+                        started_at: "2026-03-17T00:30:00+00:00"
+                        ended_at: "2026-03-17T00:53:58+00:00"
+                        ohdear_url: "https://ohdear.app/monitors/1234/check/broken-links/report/98765"
+                      - id: 98710
+                        check_id: 30536
+                        check_type: broken_links
+                        result: failed
+                        started_at: "2026-03-16T00:30:00+00:00"
+                        ended_at: "2026-03-16T00:48:12+00:00"
+                        ohdear_url: "https://ohdear.app/monitors/1234/check/broken-links/report/98710"
+                    links:
+                      documentation_url: "https://ohdear.app/docs/features/broken-links-detection"
+                      "...": "..."
+                    meta:
+                      "...": "..."
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/Validation" }
+
   /checks/{checkId}/enable:
     post:
       tags: [Checks]
@@ -1051,10 +1113,14 @@ paths:
     get:
       tags: [Broken Links]
       summary: Get broken links for a monitor
-      description: Retrieve a list of broken links found by the broken links check for a specific monitor.
+      description: >
+        Retrieve a list of broken links found by the broken links check for a specific monitor.
+        Returns results from the latest completed crawl run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
       operationId: listBrokenLinks
       parameters:
         - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
       responses:
         "200":
           description: Broken links
@@ -1073,6 +1139,13 @@ paths:
                         relative_found_on_url: /
                         link_text: Click here
                         internal: true
+                    meta:
+                      run_id: 98765
+                      run_started_at: "2026-03-17T00:30:00+00:00"
+                      run_ended_at: "2026-03-17T00:53:58+00:00"
+                      ohdear_url: "https://ohdear.app/monitors/1234/check/broken-links/report/98765"
+                    links:
+                      documentation_url: "https://ohdear.app/docs/features/broken-links-detection"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -1120,10 +1193,14 @@ paths:
     get:
       tags: [Mixed Content]
       summary: Get mixed content results for a monitor
-      description: Retrieve a list of mixed content items found by the mixed content check for a specific monitor.
+      description: >
+        Retrieve a list of mixed content items found by the mixed content check for a specific monitor.
+        Returns results from the latest completed crawl run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
       operationId: listMixedContent
       parameters:
         - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
       responses:
         "200":
           description: Mixed content items
@@ -1138,6 +1215,13 @@ paths:
                       - element_name: img
                         mixed_content_url: http://example.com/image.jpg
                         found_on_url: https://example.com
+                    meta:
+                      run_id: 98765
+                      run_started_at: "2026-03-17T00:30:00+00:00"
+                      run_ended_at: "2026-03-17T00:53:58+00:00"
+                      ohdear_url: "https://ohdear.app/monitors/1234/check/mixed-content/report/98765"
+                    links:
+                      documentation_url: "https://ohdear.app/docs/features/mixed-content-detection"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -1146,10 +1230,14 @@ paths:
     get:
       tags: [Certificates]
       summary: Get certificate health for a monitor
-      description: Retrieve the certificate health details for a specific monitor.
+      description: >
+        Retrieve the certificate health details for a specific monitor.
+        Returns results from the latest completed run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
       operationId: getCertificateHealth
       parameters:
         - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
       responses:
         "200":
           description: Certificate health
@@ -1174,6 +1262,11 @@ paths:
                     certificate_chain_issuers:
                       - "US, Let's Encrypt, Let's Encrypt Authority X3"
                       - "Digital Signature Trust Co., DST Root CA X3"
+                    run_id: 98765
+                    run_started_at: "2026-03-17T00:30:00+00:00"
+                    run_ended_at: "2026-03-17T00:53:58+00:00"
+                    ohdear_url: "https://ohdear.app/monitors/1234/check/certificate-health/report/98765"
+                    documentation_url: "https://ohdear.app/docs/features/certificate-health-monitoring"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -3296,10 +3389,14 @@ paths:
     get:
       tags: [Sitemap]
       summary: Get sitemap check results
-      description: Retrieve the latest sitemap check results for a monitor.
+      description: >
+        Retrieve the sitemap check results for a monitor.
+        Returns results from the latest completed run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
       operationId: getSitemapResults
       parameters:
         - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
       responses:
         "200":
           description: Sitemap check results
@@ -3336,6 +3433,25 @@ paths:
                         issues:
                           type: array
                           items: { type: object, additionalProperties: true }
+                  run_id:
+                    type: ["integer", "null"]
+                    description: The ID of the run these results come from
+                  run_started_at:
+                    type: ["string", "null"]
+                    format: date-time
+                    description: When the run started (ISO 8601, UTC), or null
+                  run_ended_at:
+                    type: ["string", "null"]
+                    format: date-time
+                    description: When the run completed (ISO 8601, UTC)
+                  ohdear_url:
+                    type: ["string", "null"]
+                    format: uri
+                    description: Direct link to this run's report page in the Oh Dear dashboard
+                  documentation_url:
+                    type: string
+                    format: uri
+                    description: Link to the documentation page for sitemap monitoring
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -3790,6 +3906,28 @@ components:
       in: path
       required: true
       schema: { type: integer, format: int64, minimum: 1 }
+    RunId:
+      name: run_id
+      description: Return results from a specific run instead of the latest. Get run IDs from the check history endpoint.
+      in: query
+      schema: { type: integer, format: int64, minimum: 1 }
+    FilterStartedAfter:
+      name: filter[started_after]
+      description: Only return runs started at or after this timestamp (format YmdHis in UTC, e.g. 20260315000000)
+      in: query
+      schema: { type: string, pattern: "^[0-9]{14}$" }
+    FilterStartedBefore:
+      name: filter[started_before]
+      description: Only return runs started at or before this timestamp (format YmdHis in UTC, e.g. 20260320000000)
+      in: query
+      schema: { type: string, pattern: "^[0-9]{14}$" }
+    FilterResult:
+      name: filter[result]
+      description: Filter by run result
+      in: query
+      schema:
+        type: string
+        enum: [succeeded, warning, failed]
     MaintenancePeriodId:
       name: maintenancePeriodId
       description: ID of the maintenance period
@@ -4348,6 +4486,68 @@ components:
           description: Custom HTTP headers for this specific run (uptime checks only, max 5 headers)
           items: { $ref: "#/components/schemas/NameValuePair" }
 
+    CheckRun:
+      type: object
+      description: A historical check run record
+      properties:
+        id: { type: integer, description: Unique identifier for this run }
+        check_id: { type: integer, description: The ID of the check this run belongs to }
+        check_type: { $ref: "#/components/schemas/CheckType" }
+        result:
+          type: string
+          description: The result of this run
+          enum: [succeeded, warning, failed]
+        started_at:
+          type: ["string", "null"]
+          format: date-time
+          description: When the run started (ISO 8601, UTC), or null if not recorded
+        ended_at:
+          type: string
+          format: date-time
+          description: When the run completed (ISO 8601, UTC)
+        ohdear_url:
+          type: string
+          format: uri
+          description: Direct link to this run's report page in the Oh Dear dashboard
+
+    CheckRunsResponse:
+      type: object
+      description: Paginated list of historical check runs
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/CheckRun" }
+        links:
+          allOf:
+            - $ref: "#/components/schemas/Links"
+            - type: object
+              properties:
+                documentation_url:
+                  type: string
+                  format: uri
+                  description: Link to the documentation page for this check type
+        meta: { type: object, additionalProperties: true }
+
+    RunMetadata:
+      type: object
+      description: Metadata about which run the results come from
+      properties:
+        run_id:
+          type: ["integer", "null"]
+          description: The ID of the run
+        run_started_at:
+          type: ["string", "null"]
+          format: date-time
+          description: When the run started (ISO 8601, UTC), or null
+        run_ended_at:
+          type: ["string", "null"]
+          format: date-time
+          description: When the run completed (ISO 8601, UTC)
+        ohdear_url:
+          type: ["string", "null"]
+          format: uri
+          description: Direct link to this run's report page in the Oh Dear dashboard
+
     CheckSummary:
       type: object
       description: Summary of a check's latest run
@@ -4462,7 +4662,7 @@ components:
 
     BrokenLinksResponse:
       type: object
-      description: Response containing broken links found during the latest crawl
+      description: Response containing broken links found during a crawl run
       properties:
         data:
           type: array
@@ -4476,10 +4676,18 @@ components:
               relative_found_on_url: { type: string }
               internal: { type: boolean }
               link_text: { type: string }
+        meta: { $ref: "#/components/schemas/RunMetadata" }
+        links:
+          type: object
+          properties:
+            documentation_url:
+              type: string
+              format: uri
+              description: Link to the documentation page for broken links
 
     MixedContentResponse:
       type: object
-      description: Response containing mixed content found during the latest crawl
+      description: Response containing mixed content found during a crawl run
       properties:
         data:
           type: array
@@ -4489,10 +4697,18 @@ components:
               element_name: { type: string }
               mixed_content_url: { type: string }
               found_on_url: { type: string }
+        meta: { $ref: "#/components/schemas/RunMetadata" }
+        links:
+          type: object
+          properties:
+            documentation_url:
+              type: string
+              format: uri
+              description: Link to the documentation page for mixed content
 
     CertificateHealth:
       type: object
-      description: Health details of the latest certificate check
+      description: Health details of a certificate check run
       properties:
         certificate_details:
           type: object
@@ -4511,6 +4727,25 @@ components:
         certificate_chain_issuers:
           type: array
           items: { type: string }
+        run_id:
+          type: ["integer", "null"]
+          description: The ID of the run these results come from
+        run_started_at:
+          type: ["string", "null"]
+          format: date-time
+          description: When the run started (ISO 8601, UTC), or null
+        run_ended_at:
+          type: ["string", "null"]
+          format: date-time
+          description: When the run completed (ISO 8601, UTC)
+        ohdear_url:
+          type: ["string", "null"]
+          format: uri
+          description: Direct link to this run's report page in the Oh Dear dashboard
+        documentation_url:
+          type: string
+          format: uri
+          description: Link to the documentation page for certificate health
 
     DetectedCertificate:
       type: object
