@@ -28,6 +28,8 @@ tags:
     description: Endpoints related to application health checks.
   - name: Broken Links
     description: Endpoints related to broken links checks.
+  - name: Crawled URLs
+    description: Endpoints for retrieving crawled URL summaries and details from broken links crawl runs.
   - name: Certificates
     description: Endpoints related to certificate health checks.
   - name: Check History
@@ -1138,6 +1140,8 @@ paths:
                         found_on_url: https://example.com
                         relative_found_on_url: /
                         link_text: Click here
+                        type: link
+                        error_message: null
                         internal: true
                     meta:
                       run_id: 98765
@@ -1188,6 +1192,113 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
+
+  /crawled-urls/{monitorId}/summary:
+    get:
+      tags: [Crawled URLs]
+      summary: Get crawled URLs summary
+      description: >
+        Returns a summary with counts of all URLs found during a crawl run, not just the broken ones.
+        Useful for understanding the scope of a crawl without fetching every URL.
+        Returns results from the latest completed crawl run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
+      operationId: getCrawledUrlsSummary
+      parameters:
+        - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
+      responses:
+        "200":
+          description: Crawled URLs summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CrawledUrlsSummaryResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      total: 1234
+                      internal: 800
+                      external: 434
+                      by_type:
+                        image: 250
+                        link: 900
+                        og:image: 14
+                        script: 40
+                        stylesheet: 30
+                    meta:
+                      run_id: 98765
+                      run_started_at: "2026-03-17T00:30:00+00:00"
+                      run_ended_at: "2026-03-17T00:53:58+00:00"
+                    links: {}
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422":
+          description: Monitor has no broken links check
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /crawled-urls/{monitorId}/details:
+    get:
+      tags: [Crawled URLs]
+      summary: Get crawled URLs details
+      description: >
+        Returns a paginated list of all URLs found during a crawl run (100 per page).
+        Each entry includes the same fields as the broken links response.
+        Returns results from the latest completed crawl run by default.
+        Pass `run_id` to fetch results from a specific past run (see check history endpoint).
+      operationId: listCrawledUrlsDetails
+      parameters:
+        - $ref: "#/components/parameters/MonitorId"
+        - $ref: "#/components/parameters/RunId"
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: Paginated crawled URLs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CrawledUrlsDetailsResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      - status_code: 200
+                        crawled_url: https://example.com/page
+                        relative_crawled_url: /page
+                        found_on_url: https://example.com
+                        relative_found_on_url: /
+                        link_text: Some page
+                        type: link
+                        error_message: null
+                        internal: true
+                    meta:
+                      current_page: 1
+                      from: 1
+                      last_page: 53
+                      per_page: 100
+                      to: 100
+                      total: 5230
+                      run_id: 98765
+                      run_started_at: "2026-03-17T00:30:00+00:00"
+                      run_ended_at: "2026-03-17T00:53:58+00:00"
+                    links:
+                      first: "/?page=1"
+                      last: "/?page=53"
+                      prev: null
+                      next: "/?page=2"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422":
+          description: Monitor has no broken links check
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /mixed-content/{monitorId}:
     get:
@@ -4674,8 +4785,15 @@ components:
               status_code: { type: integer }
               found_on_url: { type: string, format: uri }
               relative_found_on_url: { type: string }
-              internal: { type: boolean }
               link_text: { type: string }
+              type:
+                type: string
+                description: The kind of resource
+                enum: [link, image, script, stylesheet, "og:image"]
+              error_message:
+                type: ["string", "null"]
+                description: A description of the error when the request failed entirely (e.g. DNS resolution failure, connection timeout), or null when a status code was received
+              internal: { type: boolean }
         meta: { $ref: "#/components/schemas/RunMetadata" }
         links:
           type: object
@@ -4684,6 +4802,70 @@ components:
               type: string
               format: uri
               description: Link to the documentation page for broken links
+
+    CrawledUrlsSummaryResponse:
+      type: object
+      description: Summary counts of all URLs found during a crawl run
+      properties:
+        data:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: The total number of URLs crawled
+            internal:
+              type: integer
+              description: URLs on the same domain as the monitor
+            external:
+              type: integer
+              description: URLs pointing to other domains
+            by_type:
+              type: object
+              description: Breakdown by resource type
+              additionalProperties: { type: integer }
+        meta: { $ref: "#/components/schemas/RunMetadata" }
+        links: { type: object }
+
+    CrawledUrlsDetailsResponse:
+      type: object
+      description: Paginated list of all URLs found during a crawl run
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              crawled_url: { type: string, format: uri }
+              relative_crawled_url: { type: string }
+              status_code: { type: integer }
+              found_on_url: { type: string, format: uri }
+              relative_found_on_url: { type: string }
+              link_text: { type: string }
+              type:
+                type: string
+                enum: [link, image, script, stylesheet, "og:image"]
+              error_message:
+                type: ["string", "null"]
+              internal: { type: boolean }
+        meta:
+          type: object
+          properties:
+            current_page: { type: integer }
+            from: { type: ["integer", "null"] }
+            last_page: { type: integer }
+            per_page: { type: integer }
+            to: { type: ["integer", "null"] }
+            total: { type: integer }
+            run_id: { type: ["integer", "null"] }
+            run_started_at: { type: ["string", "null"], format: date-time }
+            run_ended_at: { type: ["string", "null"], format: date-time }
+        links:
+          type: object
+          properties:
+            first: { type: string, format: uri }
+            last: { type: string, format: uri }
+            prev: { type: ["string", "null"], format: uri }
+            next: { type: ["string", "null"], format: uri }
 
     MixedContentResponse:
       type: object

@@ -307,6 +307,30 @@ workflows:
       - name: Authorization
         value: Bearer {$inputs.bearerAuth}
         in: header
+  - workflowId: get-crawled-urls-{monitorId}-summary-workflow
+    steps:
+      - stepId: get-crawled-urls-{monitorId}-summary-step
+        operationId: $sourceDescriptions.openapi.getCrawledUrlsSummary
+        successCriteria:
+          - condition: $statusCode == 200
+    inputs:
+      $ref: "#/components/inputs/bearerAuth"
+    parameters:
+      - name: Authorization
+        value: Bearer {$inputs.bearerAuth}
+        in: header
+  - workflowId: get-crawled-urls-{monitorId}-details-workflow
+    steps:
+      - stepId: get-crawled-urls-{monitorId}-details-step
+        operationId: $sourceDescriptions.openapi.listCrawledUrlsDetails
+        successCriteria:
+          - condition: $statusCode == 200
+    inputs:
+      $ref: "#/components/inputs/bearerAuth"
+    parameters:
+      - name: Authorization
+        value: Bearer {$inputs.bearerAuth}
+        in: header
   - workflowId: get-mixed-content-{monitorId}-workflow
     steps:
       - stepId: get-mixed-content-{monitorId}-step
