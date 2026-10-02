@@ -5266,6 +5266,13 @@ components:
           type: ["string", "null"]
         prevent_indexing: { type: boolean }
         add_hsts_header: { type: boolean }
+        show_uptime_history:
+          type: boolean
+          description: Whether the uptime history bars are shown below each monitor
+        uptime_history_days:
+          type: integer
+          enum: [30, 60, 90]
+          description: How many days of uptime history the bars cover
         monitors:
           type: array
           items:
