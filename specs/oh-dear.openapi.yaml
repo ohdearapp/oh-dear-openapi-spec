@@ -16,6 +16,8 @@ info:
   description: >
     OpenAPI 3.1 specification for the Oh Dear API, aligned with the public documentation and SDK.
     Authentication is via the HTTP Authorization Header using a Bearer token.
+    Requests for a resource you are not allowed to access return 404 Not Found, exactly like
+    a resource that does not exist.
 servers:
   - url: https://ohdear.app/api
     description: Production
@@ -430,7 +432,6 @@ paths:
                     created_at: "2019-09-16 07:25:00"
                     updated_at: "2019-09-16 07:25:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     put:
       tags: [Monitors]
@@ -554,7 +555,6 @@ paths:
                     id: 99
                     label: Documentation
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -567,7 +567,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/check-summary/{checkType}:
@@ -597,7 +596,6 @@ paths:
                     result: succeeded
                     summary: Up
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   # --- Check History ---
@@ -656,7 +654,6 @@ paths:
                     meta:
                       "...": "..."
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -679,7 +676,6 @@ paths:
                 success:
                   value: { id: 405, type: uptime, enabled: true }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /checks/{checkId}/disable:
@@ -701,7 +697,6 @@ paths:
                 success:
                   value: { id: 405, type: uptime, enabled: false }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /checks/{checkId}/request-run:
@@ -779,7 +774,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Check"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /checks/{checkId}/unsnooze:
@@ -798,7 +792,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Check"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /cron-checks/{cronCheckId}/snooze:
@@ -831,7 +824,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/CronCheck"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /cron-checks/{cronCheckId}/unsnooze:
@@ -850,7 +842,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/CronCheck"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/application-health-checks:
@@ -882,7 +873,6 @@ paths:
                         latest_result: succeeded
                         latest_run_ended_at: "2024-11-10 12:00:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/application-health-checks/{applicationHealthCheckId}/snooze:
@@ -916,7 +906,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApplicationHealthCheck"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/application-health-checks/{applicationHealthCheckId}/unsnooze:
@@ -936,7 +925,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApplicationHealthCheck"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/uptime:
@@ -972,7 +960,6 @@ paths:
                     - datetime: "2018-01-01 01:00:00"
                       uptime_percentage: 99.76
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/downtime:
@@ -1002,7 +989,6 @@ paths:
                         notes_html: "We contacted our provider and they fixed the issue."
                         notes_markdown: "We contacted our provider and they fixed the issue."
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /downtime/{downtimeId}:
@@ -1020,7 +1006,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/http-uptime-metrics:
@@ -1064,7 +1049,6 @@ paths:
                           speed_download: 137784
                         date: "2024-04-19 13:25:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/ping-uptime-metrics:
@@ -1099,7 +1083,6 @@ paths:
                         downtime_seconds: 0
                         date: "2024-04-19 13:25:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/tcp-uptime-metrics:
@@ -1131,7 +1114,6 @@ paths:
                         downtime_seconds: 0
                         date: "2024-04-19 13:25:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /broken-links/{monitorId}:
@@ -1174,7 +1156,6 @@ paths:
                     links:
                       documentation_url: "https://ohdear.app/docs/features/broken-links-detection"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/add-to-broken-links-whitelist:
@@ -1213,7 +1194,6 @@ paths:
                 success:
                   value: { message: "URL added to whitelist." }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /crawled-urls/{monitorId}/summary:
@@ -1255,7 +1235,6 @@ paths:
                       run_ended_at: "2026-03-17T00:53:58+00:00"
                     links: {}
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422":
           description: Monitor has no broken links check
@@ -1314,7 +1293,6 @@ paths:
                       prev: null
                       next: "/?page=2"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422":
           description: Monitor has no broken links check
@@ -1357,7 +1335,6 @@ paths:
                     links:
                       documentation_url: "https://ohdear.app/docs/features/mixed-content-detection"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /certificate-health/{monitorId}:
@@ -1402,7 +1379,6 @@ paths:
                     ohdear_url: "https://ohdear.app/monitors/1234/check/certificate-health/report/98765"
                     documentation_url: "https://ohdear.app/docs/features/certificate-health-monitoring"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/detected-certificates:
@@ -1464,7 +1440,6 @@ paths:
                       to: 1
                       total: 1
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/detected-certificates/{certificateId}:
@@ -1506,7 +1481,6 @@ paths:
                     created_at: "2023-10-01T12:30:00Z"
                     updated_at: "2023-10-01T12:30:00Z"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/maintenance-periods:
@@ -1536,7 +1510,6 @@ paths:
                         starts_at: "2020-01-09 10:37:24"
                         ends_at: "2020-01-09 10:42:24"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/start-maintenance:
@@ -1583,7 +1556,6 @@ paths:
                     starts_at: "2020-01-09 10:28:54"
                     ends_at: "2020-01-09 11:28:54"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/stop-maintenance:
@@ -1609,7 +1581,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /maintenance-periods:
@@ -1671,7 +1642,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/MaintenancePeriod"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -1684,7 +1654,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /status-pages:
@@ -1784,7 +1753,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatusPageWithUpdates"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     delete:
       tags: [Status Pages]
@@ -1796,7 +1764,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /status-pages/{statusPageId}/monitors:
@@ -1829,7 +1796,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatusPage"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /status-pages/{statusPageId}/monitors/{monitorId}:
@@ -1844,7 +1810,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /status-pages/{statusPageId}/updates:
@@ -1883,7 +1848,6 @@ paths:
                         time: "2019-09-16 08:11:00"
                         status_page_url: https://ohdear.app/status-page/your-slug
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /status-page-updates:
@@ -1955,7 +1919,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatusPageUpdate"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -1972,7 +1935,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/cron-checks:
@@ -2009,7 +1971,6 @@ paths:
                         latest_ping_at: "2020-11-16 09:19:40"
                         human_readable_latest_ping_at: "5 minutes ago"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     post:
       tags: [Cron Checks]
@@ -2144,7 +2105,6 @@ paths:
                       latest_result: pingFinished
                       latest_ping_at: "2020-11-16 09:19:40"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -2170,7 +2130,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/CronCheck"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -2183,7 +2142,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/dns-history-items:
@@ -2223,7 +2181,6 @@ paths:
                         diff_summary: No changes
                         created_at: "2021-11-05 16:07:38"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/domain:
@@ -2255,7 +2212,6 @@ paths:
                     rdap_domain_response: {}
                     created_at: "2022-06-10 20:33:06"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/application-health-checks/{applicationHealthCheckId}:
@@ -2295,7 +2251,6 @@ paths:
                         detected_at: "2021-01-01 00:00:00"
                         updated_at: "2021-01-01 00:00:00"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/lighthouse-reports:
@@ -2348,7 +2303,6 @@ paths:
                       to: 1
                       total: 1
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/lighthouse-reports/latest:
@@ -2389,7 +2343,6 @@ paths:
                         notificationThreshold: 70
                     created_at: "2023-01-14 00:00:55"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/lighthouse-reports/{lighthouseReportId}:
@@ -2409,7 +2362,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/LighthouseReport"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/ai-responses:
@@ -2466,7 +2418,6 @@ paths:
                       to: 1
                       total: 1
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/ai-responses/latest:
@@ -2514,7 +2465,6 @@ paths:
                     ended_at: "2024-01-15 10:30:45"
                     created_at: "2024-01-15 10:30:45"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/ai-responses/{aiResponseId}:
@@ -2534,7 +2484,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/AiResponse"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tags:
@@ -2710,7 +2659,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagGroup"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -2723,7 +2671,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /team-notification-destinations:
@@ -2796,7 +2743,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/TeamNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /team-notification-destinations/{teamId}/destination/{destinationId}:
@@ -2829,7 +2776,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TeamNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -2843,7 +2789,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /team-notification-destinations/{teamId}/destination/{destinationId}/enable:
@@ -2863,7 +2808,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TeamNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /team-notification-destinations/{teamId}/destination/{destinationId}/disable:
@@ -2883,7 +2827,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TeamNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/notification-destinations:
@@ -2913,7 +2856,6 @@ paths:
                           - HttpUptimeCheckFailedNotification
                           - HttpUptimeCheckRecoveredNotification
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     post:
       tags: [Notification Destinations]
@@ -2945,7 +2887,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/MonitorNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -2972,7 +2913,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/MonitorNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -2986,7 +2926,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/notification-destinations/{destinationId}/enable:
@@ -3006,7 +2945,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/MonitorNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/notification-destinations/{destinationId}/disable:
@@ -3026,7 +2964,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/MonitorNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tags/notification-destinations:
@@ -3083,7 +3020,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -3110,7 +3046,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -3126,7 +3061,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tags/{tagId}/notification-destinations/{destinationId}/enable:
@@ -3146,7 +3080,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tags/{tagId}/notification-destinations/{destinationId}/disable:
@@ -3166,7 +3099,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tag-groups/{tagGroupId}/notification-destinations:
@@ -3205,7 +3137,6 @@ paths:
                           - UptimeCheckFailedNotification
                           - UptimeCheckRecoveredNotification
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     post:
       tags: [Notification Destinations]
@@ -3228,7 +3159,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagGroupNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -3255,7 +3185,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagGroupNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -3269,7 +3198,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tag-groups/{tagGroupId}/notification-destinations/{destinationId}/enable:
@@ -3289,7 +3217,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagGroupNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /tag-groups/{tagGroupId}/notification-destinations/{destinationId}/disable:
@@ -3309,7 +3236,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/TagGroupNotificationDestination"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /reseller/{resellerTeamId}/managed-teams:
@@ -3359,6 +3285,7 @@ paths:
                       total: 2
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
     post:
       tags: [Reseller]
       summary: Create a managed team
@@ -3396,6 +3323,7 @@ paths:
                       monitors_count: 0
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /reseller/{resellerTeamId}/managed-teams/{managedTeamId}:
@@ -3609,7 +3537,6 @@ paths:
                     items:
                       $ref: "#/components/schemas/PortScanResult"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/ports-history-items/{itemId}:
@@ -3629,7 +3556,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/PortScanResult"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   # --- DNS Blocklist ---
@@ -3655,7 +3581,6 @@ paths:
                     items:
                       $ref: "#/components/schemas/DnsBlocklistResult"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /monitors/{monitorId}/dns-blocklist-history-items/{itemId}:
@@ -3675,7 +3600,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/DnsBlocklistResult"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   # --- Sitemap ---
@@ -3747,7 +3671,6 @@ paths:
                     format: uri
                     description: Link to the documentation page for sitemap monitoring
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
@@ -3795,7 +3718,6 @@ paths:
                     items:
                       $ref: "#/components/schemas/RecurringMaintenancePeriod"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /recurring-maintenance-periods/{recurringMaintenancePeriodId}:
@@ -3814,7 +3736,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/RecurringMaintenancePeriod"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
     put:
       tags: [Recurring Maintenance Periods]
@@ -3837,7 +3758,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/RecurringMaintenancePeriod"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -3854,7 +3774,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /recurring-maintenance-periods:
@@ -3901,7 +3820,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Monitor"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   # --- DNS History Single Item ---
@@ -3922,7 +3840,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/DnsHistoryItem"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   # --- Status Page Update Templates ---
@@ -3990,7 +3907,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatusPageUpdateTemplate"
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
     delete:
@@ -4003,7 +3919,6 @@ paths:
       responses:
         "204": { $ref: "#/components/responses/NoContent" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
 components:
@@ -6449,7 +6364,10 @@ components:
               value:
                 message: This action is unauthorized.
     NotFound:
-      description: Not Found
+      description: >
+        Not Found. Returned when the resource does not exist, and also when it belongs to a team
+        you are not a member of or your token is not allowed to access it, so that the response
+        does not reveal whether the resource exists.
       content:
         application/json:
           schema:
@@ -6457,7 +6375,7 @@ components:
           examples:
             default:
               value:
-                message: Resource not found.
+                message: Not found.
     Validation:
       description: Validation error
       content:
