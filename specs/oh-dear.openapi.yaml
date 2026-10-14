@@ -271,6 +271,8 @@ paths:
                     speed: slow
                   application_health_check_settings:
                     result_url: https://mybrandnewsite.tld/health
+                    frequency_value: 360
+                    frequency_unit: minute
                     headers:
                       - name: my-header
                         value: my-value
@@ -509,6 +511,8 @@ paths:
                   application_health_check_settings:
                     result_url: https://example.com/health
                     secret: my-health-check-secret
+                    frequency_value: 360
+                    frequency_unit: minute
                     headers:
                       - name: my-header
                         value: my-value
@@ -4266,6 +4270,8 @@ components:
             result_url:
               type: ["string", "null"]
             secret: { type: string }
+            frequency_value: { type: integer, minimum: 1, maximum: 1440 }
+            frequency_unit: { type: string, enum: [minute] }
             headers:
               type: array
               items: { $ref: "#/components/schemas/NameValuePair" }
@@ -4391,6 +4397,8 @@ components:
           type: object
           properties:
             result_url: { type: string, format: uri }
+            frequency_value: { type: integer, minimum: 1, maximum: 1440 }
+            frequency_unit: { type: string, enum: [minute] }
             headers:
               type: array
               items: { $ref: "#/components/schemas/NameValuePair" }
@@ -4493,6 +4501,8 @@ components:
             result_url: { type: string, format: uri }
             secret:
               type: ["string", "null"]
+            frequency_value: { type: integer, minimum: 1, maximum: 1440 }
+            frequency_unit: { type: string, enum: [minute] }
             headers:
               type: array
               items: { $ref: "#/components/schemas/NameValuePair" }
