@@ -2548,6 +2548,7 @@ paths:
                 $ref: "#/components/schemas/Tag"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /tag-groups:
@@ -2628,6 +2629,7 @@ paths:
                 $ref: "#/components/schemas/TagGroup"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /tag-groups/{tagGroupId}:
@@ -3880,6 +3882,7 @@ paths:
                 $ref: "#/components/schemas/StatusPageUpdateTemplate"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /status-page-update-templates/{statusPageUpdateTemplateId}:
