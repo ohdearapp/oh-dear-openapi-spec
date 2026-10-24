@@ -1711,7 +1711,7 @@ paths:
     post:
       tags: [Status Pages]
       summary: Create a status page
-      description: Create a new status page by providing the team ID, title, and associated monitors.
+      description: Create a new status page by providing the team ID, title, and associated monitors. Guests of the team cannot create status pages and receive a 404.
       operationId: createStatusPage
       requestBody:
         description: The payload to include with the request.
@@ -1739,6 +1739,7 @@ paths:
                 $ref: "#/components/schemas/StatusPage"
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/Validation" }
 
   /status-pages/{statusPageId}:
