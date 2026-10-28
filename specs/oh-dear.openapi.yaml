@@ -2684,7 +2684,7 @@ paths:
     get:
       tags: [Notification Destinations]
       summary: Get team notification destinations
-      description: Retrieve all notification destinations defined at the team level for all your teams. Only admins and team owners can access this endpoint.
+      description: Retrieve all notification destinations defined at the team level for all your teams. Only team owners, admins, and members with access to all monitors see a team's destinations.
       operationId: listTeamNotificationDestinations
       responses:
         "200":
@@ -2712,7 +2712,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Create team notification destination
-      description: Create a new notification destination for a team. Only admins and team owners can access this endpoint.
+      description: Create a new notification destination for a team. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: createTeamNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TeamId"
@@ -2757,7 +2757,7 @@ paths:
     put:
       tags: [Notification Destinations]
       summary: Update team notification destination
-      description: Update an existing notification destination for a team. Only admins and team owners can access this endpoint.
+      description: Update an existing notification destination for a team. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: updateTeamNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TeamId"
@@ -2788,7 +2788,7 @@ paths:
     delete:
       tags: [Notification Destinations]
       summary: Delete team notification destination
-      description: Delete a notification destination from a team. Only admins and team owners can access this endpoint.
+      description: Delete a notification destination from a team. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: deleteTeamNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TeamId"
@@ -2802,7 +2802,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Enable team notification destination
-      description: Re-enable a previously disabled notification destination for a team. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Re-enable a previously disabled notification destination for a team. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: enableTeamNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TeamId"
@@ -2821,7 +2821,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Disable team notification destination
-      description: Disable a notification destination for a team without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Disable a notification destination for a team without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: disableTeamNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TeamId"
@@ -2840,7 +2840,7 @@ paths:
     get:
       tags: [Notification Destinations]
       summary: Get monitor notification destinations
-      description: Retrieve all notification destinations for a specific monitor. Only admins and team owners can access this endpoint.
+      description: Retrieve all notification destinations for a specific monitor. Any team member with access to the monitor can access this endpoint.
       operationId: listMonitorNotificationDestinations
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2867,7 +2867,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Create monitor notification destination
-      description: Create a new notification destination for a monitor. Only admins and team owners can access this endpoint.
+      description: Create a new notification destination for a monitor. Team owners, admins, and members with access to the monitor can access this endpoint. Guests of the team cannot.
       operationId: createMonitorNotificationDestination
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2901,7 +2901,7 @@ paths:
     put:
       tags: [Notification Destinations]
       summary: Update monitor notification destination
-      description: Update an existing notification destination for a monitor. Only admins and team owners can access this endpoint.
+      description: Update an existing notification destination for a monitor. Team owners, admins, and members with access to the monitor can access this endpoint. Guests of the team cannot.
       operationId: updateMonitorNotificationDestination
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2925,7 +2925,7 @@ paths:
     delete:
       tags: [Notification Destinations]
       summary: Delete monitor notification destination
-      description: Delete a notification destination from a monitor. Only admins and team owners can access this endpoint.
+      description: Delete a notification destination from a monitor. Team owners, admins, and members with access to the monitor can access this endpoint. Guests of the team cannot.
       operationId: deleteMonitorNotificationDestination
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2939,7 +2939,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Enable monitor notification destination
-      description: Re-enable a previously disabled notification destination for a monitor. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Re-enable a previously disabled notification destination for a monitor. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Team owners, admins, and members with access to the monitor can access this endpoint. Guests of the team cannot.
       operationId: enableMonitorNotificationDestination
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2958,7 +2958,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Disable monitor notification destination
-      description: Disable a notification destination for a monitor without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Disable a notification destination for a monitor without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Team owners, admins, and members with access to the monitor can access this endpoint. Guests of the team cannot.
       operationId: disableMonitorNotificationDestination
       parameters:
         - $ref: "#/components/parameters/MonitorId"
@@ -2977,7 +2977,7 @@ paths:
     get:
       tags: [Notification Destinations]
       summary: Get tag notification destinations
-      description: Retrieve all notification destinations defined at the tag level for all your teams. Only admins and team owners can access this endpoint.
+      description: Retrieve all notification destinations defined at the tag level for all your teams. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: listTagNotificationDestinations
       responses:
         "200":
@@ -3009,7 +3009,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Create tag notification destination
-      description: Create a new notification destination for a tag. Only admins and team owners can access this endpoint.
+      description: Create a new notification destination for a tag. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: createTagNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagId"
@@ -3034,7 +3034,7 @@ paths:
     put:
       tags: [Notification Destinations]
       summary: Update tag notification destination
-      description: Update an existing notification destination for a tag. Only admins and team owners can access this endpoint.
+      description: Update an existing notification destination for a tag. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: updateTagNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagId"
@@ -3060,7 +3060,7 @@ paths:
     delete:
       tags: [Notification Destinations]
       summary: Delete tag notification destination
-      description: Delete a notification destination from a tag. Only admins and team owners can access this endpoint.
+      description: Delete a notification destination from a tag. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: deleteTagNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagId"
@@ -3074,7 +3074,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Enable tag notification destination
-      description: Re-enable a previously disabled notification destination for a tag. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Re-enable a previously disabled notification destination for a tag. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: enableTagNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagId"
@@ -3093,7 +3093,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Disable tag notification destination
-      description: Disable a notification destination for a tag without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Disable a notification destination for a tag without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: disableTagNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagId"
@@ -3112,7 +3112,7 @@ paths:
     get:
       tags: [Notification Destinations]
       summary: Get tag group notification destinations
-      description: Retrieve all notification destinations for a specific tag group. Only admins and team owners can access this endpoint.
+      description: Retrieve all notification destinations for a specific tag group. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: listTagGroupNotificationDestinations
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
@@ -3148,7 +3148,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Create tag group notification destination
-      description: Create a new notification destination for a tag group. Only admins and team owners can access this endpoint.
+      description: Create a new notification destination for a tag group. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: createTagGroupNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
@@ -3173,7 +3173,7 @@ paths:
     put:
       tags: [Notification Destinations]
       summary: Update tag group notification destination
-      description: Update an existing notification destination for a tag group. Only admins and team owners can access this endpoint.
+      description: Update an existing notification destination for a tag group. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: updateTagGroupNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
@@ -3197,7 +3197,7 @@ paths:
     delete:
       tags: [Notification Destinations]
       summary: Delete tag group notification destination
-      description: Delete a notification destination from a tag group. Only admins and team owners can access this endpoint.
+      description: Delete a notification destination from a tag group. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: deleteTagGroupNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
@@ -3211,7 +3211,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Enable tag group notification destination
-      description: Re-enable a previously disabled notification destination for a tag group. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Re-enable a previously disabled notification destination for a tag group. Keeps all settings and selected notification types, clears any automatic disable reason, and resumes sending notifications. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: enableTagGroupNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
@@ -3230,7 +3230,7 @@ paths:
     post:
       tags: [Notification Destinations]
       summary: Disable tag group notification destination
-      description: Disable a notification destination for a tag group without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only admins and team owners can access this endpoint.
+      description: Disable a notification destination for a tag group without deleting it. Keeps all settings and selected notification types but pauses sending notifications until it is enabled again. Takes no request body and never sends an email. Only team owners, admins, and members with access to all monitors can access this endpoint.
       operationId: disableTagGroupNotificationDestination
       parameters:
         - $ref: "#/components/parameters/TagGroupId"
