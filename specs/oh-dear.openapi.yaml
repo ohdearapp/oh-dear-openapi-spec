@@ -665,7 +665,7 @@ paths:
     post:
       tags: [Checks]
       summary: Enable a check
-      description: Enable a specific check by its ID.
+      description: Enable a specific check by its ID. A `performance` check can't be enabled directly; enable the `uptime` check instead.
       operationId: enableCheck
       parameters:
         - $ref: "#/components/parameters/CheckId"
@@ -681,12 +681,24 @@ paths:
                   value: { id: 405, type: uptime, enabled: true }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "404": { $ref: "#/components/responses/NotFound" }
+        "422":
+          description: >-
+            The check is a `performance` check, which can't be enabled directly.
+            It follows the `uptime` check, so enable that check instead.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                performance_check:
+                  value:
+                    message: You cannot enable or disable performance checks directly. Instead enable or disable the uptime check for this site.
 
   /checks/{checkId}/disable:
     post:
       tags: [Checks]
       summary: Disable a check
-      description: Disable a specific check by its ID.
+      description: Disable a specific check by its ID. A `performance` check can't be disabled directly; disable the `uptime` check instead.
       operationId: disableCheck
       parameters:
         - $ref: "#/components/parameters/CheckId"
@@ -702,6 +714,18 @@ paths:
                   value: { id: 405, type: uptime, enabled: false }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "404": { $ref: "#/components/responses/NotFound" }
+        "422":
+          description: >-
+            The check is a `performance` check, which can't be disabled directly.
+            It follows the `uptime` check, so disable that check instead.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                performance_check:
+                  value:
+                    message: You cannot enable or disable performance checks directly. Instead enable or disable the uptime check for this site.
 
   /checks/{checkId}/request-run:
     post:
